@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  sample.gateway:
+    image: sample-gateway
+    build:
+      context: .
+      dockerfile: Sample.Gateway/Dockerfile
+
+  sample.aggregator:
+    image: sample-aggregator
+    build:
+      context: .
+      dockerfile: Sample.Aggregator/Dockerfile
+
+  sample.elfo-one:
+    image: elfo-one
+    build:
+      context: .
+      dockerfile: Sample.ElfoOne/Dockerfile
+
+  sample.elfo-two:
+    image: elfo-two
+    build:
+      context: .
+      dockerfile: Sample.ElfoTwo/Dockerfile
