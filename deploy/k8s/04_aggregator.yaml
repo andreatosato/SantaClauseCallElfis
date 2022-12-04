@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aggregator
+  namespace: santa
+spec:
+  selector:
+    matchLabels:
+      app: aggregator
+  template:
+    metadata:
+      labels:
+        app: aggregator
+    spec:
+      containers:
+      - name: elfo-aggregator
+        image: santaclause.azurecr.io/aggregator:0.0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aggregator-service
+  namespace: santa
+spec:
+  selector:
+    app: aggregator
+  ports:
+  - port: 80
+    targetPort: 80
+
