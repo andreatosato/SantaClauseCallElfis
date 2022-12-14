@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: elfo-one
-        image: santaclause.azurecr.io/elfo-one:0.0.1
+        image: santaclause.azurecr.io/elfo-one:0.0.3
         resources:
           limits:
             memory: "128Mi"

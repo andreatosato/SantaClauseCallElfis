@@ -14,13 +14,18 @@ spec:
     spec:
       containers:
       - name: elfo-aggregator
-        image: santaclause.azurecr.io/aggregator:0.0.1
+        image: santaclause.azurecr.io/aggregator:0.0.3
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 80
+        env:
+        - name: HttpConfigurations__ServiceOneUrl
+          value: http://elfo-one-service.santa.svc.cluster.local
+        - name: HttpConfigurations__ServiceTwoUrl
+          value: http://elfo-two-service.santa.svc.cluster.local
 ---
 apiVersion: v1
 kind: Service

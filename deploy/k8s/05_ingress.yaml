@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress
+  namespace: santa
+spec:
+  selector:
+    matchLabels:
+      app: ingress
+  template:
+    metadata:
+      labels:
+        app: ingress
+    spec:
+      containers:
+      - name: ingress
+        image: santaclause.azurecr.io/ingress:0.0.6
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+          name: proxy
+          protocol: TCP
+        - containerPort: 8443
+          name: proxy-ssl
+          protocol: TCP
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://*:8000 #;https://*:8443
+        volumeMounts:
+          - name: config
+            readOnly: true
+            mountPath: /app/config
+      volumes:
+      - name: config
+        configMap:
+          name: yarp-config
+      serviceAccountName: yarp-serviceaccount    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-service
+  namespace: santa
+spec:
+  selector:
+    app: ingress
+  ports:
+  - name: proxy
+    port: 80
+    protocol: TCP
+    targetPort: 8000
+  - name: proxy-ssl
+    port: 443
+    protocol: TCP
+    targetPort: 8443
+  type: LoadBalancer
